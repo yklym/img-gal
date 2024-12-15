@@ -26,7 +26,7 @@ import { useImageDataContext } from "@/components/imageDataContext";
 import { FilterSortKey, UnitType } from "@/types";
 import { SelectChangeEvent } from "@mui/material/Select";
 
-const DEFAULT_SORT_KEY = AvailableDateShortcuts.TODAY;
+const DEFAULT_SORT_KEY = AvailableDateShortcuts.ALL_TIME;
 
 const HomepageFilters = () => {
   const { filters, onSetFilter } = useImageDataContext();
