@@ -20,7 +20,6 @@ const AuthPage = () => {
     }
 
     onLogin(email, password);
-    console.log("formData", formData);
 
     return {};
   };

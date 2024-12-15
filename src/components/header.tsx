@@ -4,6 +4,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { alpha, styled } from "@mui/material/styles";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import { useImageDataContext } from "./imageDataContext";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -21,6 +22,11 @@ const VisuallyHiddenInput = styled("input")({
 
 const Header = () => {
   const { username, onLogout } = useAuthContext();
+  const { selectedImages, onDeleteImages, onUpload } = useImageDataContext();
+
+  const handleDeleteClick = () => {
+    onDeleteImages(selectedImages);
+  };
 
   return (
     <header
@@ -41,13 +47,17 @@ const Header = () => {
             Upload files
             <VisuallyHiddenInput
               type="file"
-              onChange={(event) => console.log(event.target.files)}
-              multiple
+              onChange={(event) => onUpload(event.target.files[0])}
             />
           </Button>
 
           {/* DELETE */}
-          <Button disabled variant="outlined" startIcon={<DeleteIcon />}>
+          <Button
+            disabled={!selectedImages.length}
+            variant="outlined"
+            onClick={handleDeleteClick}
+            startIcon={<DeleteIcon />}
+          >
             Delete
           </Button>
         </Stack>

@@ -1,7 +1,6 @@
 import { FC, HTMLAttributes, useState } from "react";
 
 import { combinedTheme, ThemeType } from "./theme";
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import {
   Checkbox,
   FormControl,
@@ -10,17 +9,16 @@ import {
   OutlinedInput,
   Radio,
   Select as MuiSelect,
-  SelectChangeEvent,
   Snackbar,
   Stack,
   Typography,
-  useTheme,
+  InputLabel,
 } from "@mui/material";
-import { ThemeProvider } from "@mui/material/styles";
-import { Badge } from "../badge";
+import { ThemeProvider, useTheme } from "@mui/material/styles";
 import AngleDownIcon from "@mui/icons-material/ArrowDropDown";
 
 import { MenuListWithScrollbar } from "./customSelect";
+import { SelectChangeEvent } from "@mui/material/Select";
 
 export interface SelectOption {
   id: string;
@@ -87,12 +85,6 @@ const Select: FC<SelectProps> = ({
     setOpenSnackbar(false);
   };
 
-  const handleDelete = (itemId: string | number) => {
-    if (type !== "filter") return;
-    const values = selectedOptions.filter((id) => id !== itemId);
-    onItemsChange(values);
-  };
-
   return (
     <ThemeProvider theme={combinedTheme(theme, !!selectedOptions.length, type)}>
       <Stack sx={{ gap: 1.5 }}>
@@ -109,7 +101,10 @@ const Select: FC<SelectProps> = ({
         )}
 
         <FormControl size="small" sx={{ width: "auto" }}>
+          <InputLabel id="Date-select">Date</InputLabel>
+
           <MuiSelect
+            id="Date-select"
             displayEmpty
             // multiple={multiple}
             value={
@@ -117,55 +112,10 @@ const Select: FC<SelectProps> = ({
             }
             onChange={handleChange}
             sx={{
-              borderRadius: "34px",
-
-              "& .MuiSelect-icon": {
-                right: "20px",
-                transition: "transform 0.15s",
-
-                "&.MuiSelect-iconOpen": {
-                  transform: "rotateX(180deg)",
-                },
-              },
-
-              '& .MuiSelect-nativeInput:not([value=""]) + svg': {},
-
-              ".MuiSelect-select": {
-                boxSizing: "border-box",
-                minHeight: theme.spacing(5),
-                pl: "20px",
-                pr: "52px !important",
-                display: "flex",
-                alignItems: "center",
-                fontWeight: 400,
-              },
-
-              "& .MuiOutlinedInput-notchedOutline": {
-                transition: "all 0.15s",
-              },
-
-              "&:hover .MuiOutlinedInput-notchedOutline": {
-                borderColor: "lightgrey !important",
-              },
+              borderRadius: "5px",
             }}
             IconComponent={AngleDownIcon}
-            MenuProps={{
-              MenuListProps: {
-                component: MenuListWithScrollbar,
-                sx: {
-                  py: 0,
-                },
-              },
-              slotProps: {
-                paper: {
-                  sx: {
-                    borderRadius: "16px",
-                    my: 1,
-                  },
-                },
-              },
-            }}
-            input={<OutlinedInput notched />}
+            input={<OutlinedInput label="Date" notched />}
             renderValue={(selected) => {
               if (typeof displayValue === "string") {
                 return displayValue;
@@ -211,11 +161,6 @@ const Select: FC<SelectProps> = ({
                   <Component
                     checked={selectedOptions.indexOf(id) > -1}
                     disableRipple
-                    sx={{
-                      height: "40px",
-                      width: "40px",
-                      span: { color: theme.palette.primary.main },
-                    }}
                   />
 
                   <ListItemText
@@ -223,7 +168,6 @@ const Select: FC<SelectProps> = ({
                     sx={{
                       span: {
                         fontSize: "14px",
-                        color: theme.palette.primary.main,
                       },
                     }}
                   />
@@ -231,32 +175,6 @@ const Select: FC<SelectProps> = ({
               ))}
           </MuiSelect>
         </FormControl>
-
-        {type === "filter" && !!selectedOptions.length && (
-          <Stack direction="row" sx={{ flexWrap: "wrap", gap: 1, mt: -0.5 }}>
-            {selectedOptions.map((itemId) => {
-              const itemLabel = options.find(({ id }) => id === itemId)?.name;
-
-              return itemLabel ? (
-                <Badge
-                  onClick={() => handleDelete(itemId)}
-                  label={itemLabel}
-                  color={theme.palette.primary.main}
-                  key={`chip-${itemId}`}
-                  endIcon={
-                    <CloseRoundedIcon
-                      fontSize="small"
-                      sx={{
-                        width: "10px",
-                        height: "10px",
-                      }}
-                    />
-                  }
-                />
-              ) : null;
-            })}
-          </Stack>
-        )}
       </Stack>
 
       <Snackbar

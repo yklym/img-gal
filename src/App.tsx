@@ -1,10 +1,13 @@
 import { Router } from "./pages/router";
 import { AuthContextWrapper } from "./components/authContext";
+import { ImageDataContextWrapper } from "./components/imageDataContext";
 
 function App() {
   return (
     <AuthContextWrapper>
-      <Router />
+      <ImageDataContextWrapper>
+        <Router />
+      </ImageDataContextWrapper>
     </AuthContextWrapper>
   );
 }

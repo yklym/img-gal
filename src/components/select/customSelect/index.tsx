@@ -87,7 +87,6 @@ function CustomSelectComponent<T>(
 
   const menuItemStyles = {
     px: 2,
-    height: 40,
     fontSize: "14px",
     transition: "all 0.15s",
     fontWeight: 500,
@@ -121,7 +120,6 @@ function CustomSelectComponent<T>(
           padding: "10px 20px",
           paddingRight: "35px !important",
           lineHeight: "20px",
-          minHeight: "40px !important",
 
           "&:focus": {
             backgroundColor: "primary.white",

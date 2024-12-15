@@ -1,7 +1,8 @@
+import { FilterSortKey, UnitType } from "@/types";
 import {
   AvailableDateShortcuts,
   findShortcutByRange,
-} from "../../components/selectRangeDatePicker/common";
+} from "../../../../components/selectRangeDatePicker/common";
 import dayjs, { Dayjs } from "dayjs";
 
 interface FilterOptions {
@@ -43,3 +44,19 @@ export const getFilterOptions = <T extends Record<string, any>>(
 
   return { currentShortcut, customDateRange };
 };
+
+export const sortOptions = [
+  {
+    label: "Created at ASC",
+    value: FilterSortKey.CREATED_ASC,
+  },
+  {
+    label: "Created at DESC",
+    value: FilterSortKey.CREATED_DESC,
+  },
+];
+
+export const unitTypeOptions = Object.values(UnitType).map((name) => ({
+  label: name,
+  value: name,
+}));

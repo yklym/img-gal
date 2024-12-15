@@ -1,62 +1,28 @@
-import { Stack } from "@mui/material";
-import { Header } from "../../components/header";
-import {
-  SelectDateRangeChangeArgs,
-  SelectRangeDatePicker,
-} from "../../components/selectRangeDatePicker";
-
-import { useState } from "react";
-import {
-  AvailableDateShortcuts,
-  DATE_FORMATS,
-  DEFAULT_DATE_RANGE_KEY,
-  getDateShortcutEnd,
-  getDateShortcutStart,
-} from "../../components/selectRangeDatePicker/common";
-
-import { getFilterOptions } from "./common";
-
-const DEFAULT_SORT_KEY = AvailableDateShortcuts.TODAY;
+import { Grid2, Stack } from "@mui/material";
+import { HomepageFilters } from "./components/filters";
+import { Header } from "@/components/header";
+import { HomepageGallery } from "./components/gallery";
+import { HomepagePreview } from "./components/homepagePreview";
+import { useImageDataContext } from "@/components/imageDataContext";
+import { AllPageLoader } from "@/components/allPageLoader";
 
 const HomePage = () => {
-  // eslint-disable-next-line
-  const [currentFilters, setCurrentFilters] = useState({
-    start: getDateShortcutStart(DEFAULT_SORT_KEY)?.format(
-      DATE_FORMATS.API_DATE
-    ),
-    end: getDateShortcutEnd(DEFAULT_SORT_KEY)?.format(DATE_FORMATS.API_DATE),
-  });
-
-  const { customDateRange, currentShortcut } = getFilterOptions(currentFilters);
-  // eslint-disable-next-line
-  const [dateRange, setDateRange] = useState<string>(DEFAULT_DATE_RANGE_KEY);
-
-  const onSelectedDateChange = ({ start, end }: SelectDateRangeChangeArgs) => {
-    const startDate = start?.format(DATE_FORMATS.API_DATE) ?? null;
-    const endDate = end?.format(DATE_FORMATS.API_DATE) ?? null;
-    setDateRange(startDate + ":" + endDate);
-  };
-  const onDatePickerChangeSelect = (value) => {
-    setDateRange(value);
-    // setFilters({
-    //   ...filters,
-    //   start: getDateShortcutStart(value)?.format(DATE_FORMATS.API_DATE),
-    //   end: getDateShortcutEnd(value)?.format(DATE_FORMATS.API_DATE),
-    // });
-  };
+  const { selectedImages, isLoading } = useImageDataContext();
 
   return (
     <Stack>
+      {isLoading && <AllPageLoader />}
       <Header />
 
-      <SelectRangeDatePicker
-        mainTitle=""
-        defaultSelectedKey={currentShortcut}
-        onSubmitDatePicker={onSelectedDateChange}
-        onChangeSelect={onDatePickerChangeSelect}
-        customDateRange={customDateRange}
-        disableFuture
-      />
+      <Grid2 container>
+        <Grid2 size={!!selectedImages.length ? 8 : 12}>
+          <HomepageFilters />
+          <HomepageGallery size={!!selectedImages.length ? 6 : 4} />
+        </Grid2>
+        <Grid2 size={4}>
+          <HomepagePreview />
+        </Grid2>
+      </Grid2>
     </Stack>
   );
 };

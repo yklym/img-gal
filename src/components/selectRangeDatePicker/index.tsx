@@ -1,7 +1,7 @@
 import { FC, useEffect, useId, useRef, useState } from "react";
 
 import dayjs, { Dayjs } from "dayjs";
-import { Box, SxProps, useTheme } from "@mui/material";
+import { Box } from "@mui/material";
 import {
   AvailableDateShortcuts,
   DATE_FORMATS,
@@ -10,6 +10,7 @@ import {
 } from "./common";
 import { DateRangePicker } from "../date/dateRangePicker";
 import Select, { SelectOption } from "../select";
+import { SxProps, useTheme } from "@mui/material/styles";
 
 export type SelectDateRangeChangeArgs = {
   start: Dayjs | null;
@@ -166,7 +167,6 @@ export const SelectRangeDatePicker: FC<SelectRangeDatePickerProps> = ({
         display: "flex",
         alignItems: "center",
         gap: 2,
-        color: theme.palette.primary.main,
         fontWeight: 500,
         selectClassName,
         ...sx,
@@ -176,7 +176,6 @@ export const SelectRangeDatePicker: FC<SelectRangeDatePickerProps> = ({
 
       <Box sx={{ position: "relative", minWidth: "180px" }} ref={selectRef}>
         <Select
-          maxHeight="400px"
           radio
           multiple={multiple}
           options={options as unknown as SelectOption[]}
